@@ -1,0 +1,2 @@
+1- En User Profile no funcionan bien likes ni delete (se actualiza luego).
+2- No logré que los tweets se ordenen en User Profile.

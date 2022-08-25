@@ -13,7 +13,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export const firestore = firebase.firestore();
 
@@ -21,9 +23,17 @@ export const firestore = firebase.firestore();
 export const auth = firebase.auth();
 // provider of authentication
 export const provider = new firebase.auth.GoogleAuthProvider();
-// enable to login using the pop-up
+// enable to login using Google pop-up
 export const googleLogin = () => auth.signInWithPopup(provider);
 // enable to logout
 export const logout = () => auth.signOut();
+
+export const isLogged = () => {
+  return (auth.currentUser !== null && auth.currentUser.uid !== null);
+};
+
+export const getCurrentUser = () => {
+  return auth.currentUser;
+};
 
 export default firebase;

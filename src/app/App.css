@@ -1,5 +1,22 @@
-.app {
-  font-size: large;
-  font-family: 'Courier New', Courier, monospace;
-  color: black;
+*{
+  /* border: 1px black solid; */
+  background-color: #2E132C;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: white;
+  } 
+
+@font-face {
+  font-family: "Silkscreen";
+  src: url('../silkscreen/slkscr.ttf');
 }
+
+@font-face {
+  font-family: "Fira Code";
+  src: url('../fira-code/FiraCode-Regular.otf');
+}
+
+
+
+

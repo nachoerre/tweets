@@ -111,7 +111,7 @@ function Feed() {
         unsuscribeTweets();
       };
   
-      } else {navigate('/login')}
+      } else {navigate('/tweets')}
     })
   },[]);
 

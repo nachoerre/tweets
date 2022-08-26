@@ -84,7 +84,7 @@ function UserProfile() {
           setColor(snapshot.data().color);
           setUserName (snapshot.data().username);
         });
-      } else {navigate('/login')};
+      } else {navigate('/tweets')};
     })
   }, []);
 

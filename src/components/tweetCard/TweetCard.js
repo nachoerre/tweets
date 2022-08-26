@@ -47,7 +47,7 @@ export function TweetCard({ tweet }) {
   // Borra el documento en Firebase por su id
   const handleDelete = () => {
     let option = window.confirm("¿Seguro que quiere borrar su Tweet?");
-    if (option == true) {
+    if (option) {
       firestore.doc(`tweets/${id}`).delete();
       firestore
         .collection("likes")

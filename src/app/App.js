@@ -18,7 +18,7 @@ function App() {
   const [user, setUser] = useState(null)
 
   useEffect (()=>{
-    auth.onAuthStateChanged ((user)=>{
+    auth.onAuthStateChanged((user)=>{
       setUser(user);
     })
   },[])
@@ -29,7 +29,7 @@ function App() {
         <Route exact path="/" element={<Start/>}/> 
         <Route path="/feed"element={<Feed/>}/>
         <Route path="/userprofile"element={<UserProfile/>}/>
-        <Route path="/login" element={<Start/>}/>
+        <Route path="/tweets" element={<Start/>}/>
       </Routes>
   </div>
   );

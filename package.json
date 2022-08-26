@@ -1,7 +1,8 @@
 {
   "name": "joseignaciorodriguez-dwfe-9-aplication-web-fullstack",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
+  "homepage": "https://nachoerre.github.io/tweets",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
@@ -44,6 +45,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^3.2.3"
   }
 }

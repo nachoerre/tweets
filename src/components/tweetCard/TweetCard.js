@@ -34,7 +34,7 @@ export function TweetCard({ tweet }) {
 
   useEffect(() => {
     firestore
-      .doc(`users/${tweet.user}`)
+      .doc(`users/${tweet.userId}`)
       .get()
       .then((snapshot)=>{
         setColor(snapshot.data().color)

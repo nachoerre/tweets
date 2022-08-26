@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/tweets/static/css/main.dbad39b8.chunk.css",
-    "main.js": "/tweets/static/js/main.1b4a5e69.chunk.js",
-    "main.js.map": "/tweets/static/js/main.1b4a5e69.chunk.js.map",
+    "main.js": "/tweets/static/js/main.a7ef9752.chunk.js",
+    "main.js.map": "/tweets/static/js/main.a7ef9752.chunk.js.map",
     "runtime-main.js": "/tweets/static/js/runtime-main.1ac7f4d4.js",
     "runtime-main.js.map": "/tweets/static/js/runtime-main.1ac7f4d4.js.map",
     "static/js/2.50b01a86.chunk.js": "/tweets/static/js/2.50b01a86.chunk.js",
@@ -28,6 +28,6 @@
     "static/js/runtime-main.1ac7f4d4.js",
     "static/js/2.50b01a86.chunk.js",
     "static/css/main.dbad39b8.chunk.css",
-    "static/js/main.1b4a5e69.chunk.js"
+    "static/js/main.a7ef9752.chunk.js"
   ]
 }

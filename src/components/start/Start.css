@@ -24,10 +24,46 @@
 .copyright {
   color: #60265B;
   font-family: 'Fira Code';
-  font-size: 18px;
   font-weight: 450;
 }
 
 .beta {
   color:#F50D5A
+}
+
+@media (min-width:320px) and (max-width:900px) {
+
+  .start-page{
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .logo{
+    width: 100%;
+    max-width: 430px;
+  }
+
+  .is-logged-container{
+    padding-top: 100px;
+    width: 100%;
+  }
+
+  .logging-container{
+    height: 200px;
+  }
+
+  .welcome-title{
+    font-size: 36px;
+  }
+
+  .logging-title{
+    font-size: 18px;
+  }
+
+  .copyright-footer{
+    font-size: 14px;
+    position: relative;
+    padding-top: 46px;
+  }
+
 }

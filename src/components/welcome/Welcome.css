@@ -129,45 +129,41 @@
 
 
 
-@media (min-width: 280px) and (max-width:768px){
+@media (min-width:280px) and (max-width:900px){
 
-  .logo-dev-united{
-    width: 250px;
-    height: 250px;
-    margin: auto;
-    position: inherit;
+  .welcome-container{
+    height: 380px;
+  }
+  
+  .welcome{
+    font-size: 36px;
+    line-height: 36px;
   }
 
-    .welcomeContainer{
-        margin: auto;
-        position:absolute;
-        bottom: 10px;
-        display: block;
-        padding-left: 0px;
-        margin-top: 0px;
-        margin-left: 35px;
-    }
+  .username{
+    height: 53px;
+    font-size: 18px;
+    line-height: 24px;
+  }
 
-    .rights{
-        margin: auto;
-        margin-top: 50px;
-        font-size: 12px; 
-    }
+  .p-select-color{
+    font-size: 18px;
+    line-height: 24px;
+  }
 
-    .copyright{
-        color:#cab4c9;
-        margin-top: 100px;
-        margin: auto;
-        margin-right: 10px;
-    }
+  .color-button{
+    width: 42px;
+    height: 42px;
+  }
 
-    .welcome{
-        width: 230px;
-        height: 130px;
-    }
-    
-    .supercontainer{
-        display: block;
+  .color-button:focus {
+    border: 2px solid #FFFFFF;
+    transform: scale(1);
+  }
 
-    }
+  .continue-button{
+    height: 52px;
+    font-size: 20px;
+    line-height: 20px;
+  }
 }

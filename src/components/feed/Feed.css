@@ -174,3 +174,21 @@
   border-top: 2px solid #60265B;
   width: 100%;
 }
+
+@media (min-width:280px) and (max-width:900px){
+  .small-logo{
+    position: relative;
+    left: 8%;
+  }
+
+  .form-user{
+    height: 48px;
+    width: 48px;
+  }
+
+  .text-area{
+    width: 100%;
+    line-height: 20px;
+    font-size: 16px;
+  }
+}

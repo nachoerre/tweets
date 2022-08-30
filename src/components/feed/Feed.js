@@ -27,7 +27,7 @@ function Feed() {
     navigate('/userprofile')
   }
 
-  const [color, setColor] = useState ("")  
+  const [color, setColor] = useState ("");
   
   // Estructura del tweet que creamos para enviar a Firebase
   const [tweet, setTweet] = useState({
@@ -51,16 +51,15 @@ function Feed() {
   const tweetsListener = () =>
     firestore.collection("tweets").orderBy("date", "desc").onSnapshot(
       (snapshot) => {
-        const tweets = snapshot.docs.map(
-          (doc) => {
-            return {
-              ...doc.data(),
-              id: doc.id,
-            };
-          },
-          () => {
-            console.error("Sucedio un error");
-          }
+        const tweets = snapshot.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        },
+        () => {
+          console.error("Sucedio un error");
+        }
         );
         setTweets(tweets);
       },
@@ -105,12 +104,11 @@ function Feed() {
         .then((snapshot) => { 
           setColor(snapshot.data().color);
         })
-      const unsuscribeTweets = tweetsListener();
-      return () => {
-        // Limpiamos el listener creado cuando se desmonta el componente
-        unsuscribeTweets();
-      };
-  
+        const unsuscribeTweets = tweetsListener();
+        return () => {
+          // Limpiamos el listener creado cuando se desmonta el componente
+          unsuscribeTweets();
+        };
       } else {navigate('/tweets')}
     })
   },[]);

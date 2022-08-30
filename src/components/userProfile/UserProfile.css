@@ -37,7 +37,6 @@
 
 .header-username {
   height: 28px;
-  width: 100px;
   font-family: 'Silkscreen';
   font-weight: 700;
   font-size: 20px;
@@ -100,7 +99,6 @@
 .user-color {
   color: #150714;
   margin-bottom: 16px;
-  padding: 0 8px;
   letter-spacing: -0.333333px;
   font-family: 'Silkscreen';
   font-weight: 700;
@@ -130,27 +128,28 @@
   color:black;
 }
 
-@media (min-width: 280px) and (max-width:768px){
+@media (min-width: 280px) and (max-width:900px){
 
-  .userheader{
-    justify-content: space-around;
+  .header-username{
+    font-size: 14px;
+    line-height: 16px;
+    margin-right: 4px;
   }
 
-  .back-button{
-    width: 20px;
-    margin: auto;
-    margin-left: 65px;
-    }
-
-  .button-logout{
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-right: 10px;
-    padding-bottom: 10px;
+  .profile-photo{
+    width: 105px;
+    height: 105px;
   }
 
   .user-color{
-    width: 50%;
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .tabs{
+    font-size: 20px;
+    line-height: 20px;
+    height: 35px;
   }
 
 }

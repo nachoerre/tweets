@@ -34,23 +34,23 @@ function UserProfile() {
     navigate('/feed');
   };
 
-  const handlePost = () => {
-    setIsDark(true);
+  const handlePosts = () => {
     auth.onAuthStateChanged((user) =>  {
       if (user !== null) {
         firestore
-        .collection('tweets')
+        .collection('tweets').orderBy("date", "desc")
         .where("user", "==", user.uid)
-        .get()
-        .then((snapshot)=>{
+        .onSnapshot((snapshot)=>{
           const postedTweets = snapshot.docs.map((doc) => {
             return {
               ...doc.data(),
+              key: doc.id,
               id: doc.id,
               photoURL: user.photoURL
             };
           })
-        setTweets(postedTweets);
+          setIsDark(true);
+          setTweets(postedTweets);
         })
       }
     })
@@ -58,25 +58,27 @@ function UserProfile() {
 
   const handleFavorite = async () => {
     setIsDark(false);
-    const likes = await firestore.collection('likes')
-    .where("userId", "==", user.uid)
-    .get();
-    const favTweets = await Promise.all ( 
-      likes.docs.map( async (doc) => { 
+    let userLikes = await firestore
+      .collection('likes')
+      .orderBy("date", "desc")
+      .where("userId", "==", user.uid)
+      .get()
+      let favTweets = await Promise.all (userLikes.docs.map(async (doc) => {
         const tweetId = doc.data().tweetId;
         const otherTweet = await firestore.doc(`tweets/${tweetId}`).get();
         return {
-            ...otherTweet.data(), id:otherTweet.id
+          ...otherTweet.data(),
+          key: otherTweet.id,
+          id: otherTweet.id
         };
-      })
-    )
-    setTweets(favTweets);
+      }))
+      setTweets(favTweets);
   }
+  
   
   useEffect(() => {
     auth.onAuthStateChanged((user) =>  {
-      handlePost();
-      if (user !== null){
+      if (user !== null) {
         firestore
         .doc(`users/${user.uid}`)
         .get()
@@ -84,6 +86,11 @@ function UserProfile() {
           setColor(snapshot.data().color);
           setUserName (snapshot.data().username);
         });
+        const unsuscribePosts = handlePosts();
+        return () => {
+          // Limpiamos el listener creado cuando se desmonta el componente
+          unsuscribePosts();
+        };
       } else {navigate('/tweets')};
     })
   }, []);
@@ -111,7 +118,7 @@ function UserProfile() {
           <div className="tabs-buttons">
             <button 
               type="button" 
-              onClick={handlePost} 
+              onClick={handlePosts} 
               className={`tabs ${isDark ? 'tabs-light': ''}` }
               >POSTS
             </button>
@@ -127,7 +134,9 @@ function UserProfile() {
       <div className="tweets-list">
         {tweets.map((tweet) => {
           return (
-            <TweetCard key={tweet.id} tweet={tweet} />
+            <TweetCard 
+              key={tweet.id} 
+              tweet={tweet} />
           );
         })}
       </div>

@@ -25,10 +25,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .tweet-header div {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .tweet-header h1 {
@@ -121,4 +123,27 @@
 
 .red-number {
   color: red;
+}
+
+@media (min-width:280px) and (max-width:900px){
+
+  .tweet-user-img{
+    height: 48px;
+    width: 48px;
+  }
+  
+  .tweet-header h1{
+    font-size: 16px;
+    line-height: 16px;
+  }
+
+  .tweet-header .date{
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .tweet-container h4{
+    font-size: 14px;
+    line-height: 18px;
+  }
 }

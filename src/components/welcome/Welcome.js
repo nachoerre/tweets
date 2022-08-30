@@ -58,7 +58,13 @@ function Welcome() {
           <span className="welcome">WELCOME </span>
           <span className="welcome beta">{user.displayName}!</span>
         </div>
-        <input type="text" placeholder="Type your username" className="username" onChange={userChange}></input>
+        <input 
+          type="text" 
+          placeholder="Type your username" 
+          className="username" 
+          onChange={userChange}
+          maxLength="18">
+        </input>
         <div className="p-select-color">Select your favorite color</div>
         <div className="colors-container"> 
           <button className="color-button beta-background" type="button" onClick={colorChange} data-color="beta">

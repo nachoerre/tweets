@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/tweets/static/css/main.bf8fae94.chunk.css",
-    "main.js": "/tweets/static/js/main.30953496.chunk.js",
-    "main.js.map": "/tweets/static/js/main.30953496.chunk.js.map",
+    "main.css": "/tweets/static/css/main.9e33d010.chunk.css",
+    "main.js": "/tweets/static/js/main.2ed0db59.chunk.js",
+    "main.js.map": "/tweets/static/js/main.2ed0db59.chunk.js.map",
     "runtime-main.js": "/tweets/static/js/runtime-main.18c24e16.js",
     "runtime-main.js.map": "/tweets/static/js/runtime-main.18c24e16.js.map",
     "static/js/2.77363da0.chunk.js": "/tweets/static/js/2.77363da0.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.ee3f1ee2.chunk.js": "/tweets/static/js/3.ee3f1ee2.chunk.js",
     "static/js/3.ee3f1ee2.chunk.js.map": "/tweets/static/js/3.ee3f1ee2.chunk.js.map",
     "index.html": "/tweets/index.html",
-    "static/css/main.bf8fae94.chunk.css.map": "/tweets/static/css/main.bf8fae94.chunk.css.map",
+    "static/css/main.9e33d010.chunk.css.map": "/tweets/static/css/main.9e33d010.chunk.css.map",
     "static/js/2.77363da0.chunk.js.LICENSE.txt": "/tweets/static/js/2.77363da0.chunk.js.LICENSE.txt",
     "static/media/App.css": "/tweets/static/media/slkscr.f9b986d3.ttf",
     "static/media/arrow.67f326fd.svg": "/tweets/static/media/arrow.67f326fd.svg",
@@ -27,7 +27,7 @@
   "entrypoints": [
     "static/js/runtime-main.18c24e16.js",
     "static/js/2.77363da0.chunk.js",
-    "static/css/main.bf8fae94.chunk.css",
-    "static/js/main.30953496.chunk.js"
+    "static/css/main.9e33d010.chunk.css",
+    "static/js/main.2ed0db59.chunk.js"
   ]
 }

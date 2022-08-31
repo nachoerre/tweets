@@ -6,7 +6,7 @@ import Welcome from '../welcome/Welcome';
 import { isLogged } from '../../firebase/Firebase';
 
 //imgs
-import logo from '../../pictures/logo.svg';
+import logo from '../../assets/pictures/logo.svg';
 
 //styles
 import './Start.css';

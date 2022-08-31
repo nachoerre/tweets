@@ -2,7 +2,7 @@
 import { googleLogin } from '../../firebase/Firebase';
 
 //imgs
-import buttonGoogle from '../../pictures/buttonGoogle.svg';
+import buttonGoogle from '../../assets/pictures/buttonGoogle.svg';
 
 //style
 import './Logging.css';

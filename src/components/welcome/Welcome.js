@@ -15,26 +15,31 @@ function Welcome() {
   let user = getCurrentUser();
 
   const [buttonDisable, setButtonDisable] = useState(true);
-  const [color, setColor] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userColor, setUserColor] = useState("");
   const [userName, setUserName] = useState("");
+  
+  useEffect(() => {
+    if (userColor !== "" && userName.length !== 0)
+    setButtonDisable(false);
+  }, [userColor, userName])
 
   const userChange = (e) => {
     setUserName(e.target.value);
   };
 
   const colorChange = (e) => {
-    setColor(e.currentTarget.dataset.color);
+    setUserColor(e.currentTarget.dataset.color);
   };
 
   const continueClick = (e) => {
-    if (color !== "" && userName.length !== 0) {
+    if (userColor !== "" && userName.length !== 0) {
       setLoading(true)
       setTimeout(function () {
         firestore
         .collection('users')
         .doc(user.uid)
-        .set({ name:user.displayName, email:user.email, color:color, username:userName })
+        .set({ name:user.displayName, email:user.email, color:userColor, username:userName })
         setLoading(false)
         navigate('/feed')
       }, 2000);
@@ -42,11 +47,6 @@ function Welcome() {
       alert("You need to pick a user name and a color!")
     }
   };
-
-  useEffect(() => {
-    if (color !== "" && userName.length !== 0)
-    setButtonDisable(false);
-  }, [color, userName])
 
 
   return (

@@ -5,8 +5,8 @@ import { TweetCard } from '../tweetCard/TweetCard';
 import {auth, firestore, getCurrentUser, logout} from '../../firebase/Firebase';
 
 //imgs
-import arrow from '../../pictures/arrow.svg';
-import imglogout from '../../pictures/imglogout.svg';
+import arrow from '../../assets/pictures/arrow.svg';
+import imglogout from '../../assets/pictures/imglogout.svg';
 
 //React
 import { useState, useEffect } from 'react'
@@ -20,9 +20,10 @@ function UserProfile() {
   let navigate = useNavigate();
   let user = getCurrentUser();
 
-  const [color, setColor] = useState ("")
+  const [favedTweets, setFavedTweets] = useState([]);
   const [isDark, setIsDark] = useState(false);
-  const [tweets, setTweets] = useState([]);
+  const [postedTweets, setPostedTweets] = useState([]);
+  const [userColor, setUserColor] = useState ("")
   const [userName, setUserName] = useState ("")
 
   const onClickLogout = (e) => {
@@ -35,22 +36,22 @@ function UserProfile() {
   };
 
   const handlePosts = () => {
+    setIsDark(true);
     auth.onAuthStateChanged((user) =>  {
       if (user !== null) {
         firestore
         .collection('tweets').orderBy("date", "desc")
-        .where("user", "==", user.uid)
+        .where("userId", "==", user.uid)
         .onSnapshot((snapshot)=>{
           const postedTweets = snapshot.docs.map((doc) => {
             return {
               ...doc.data(),
-              key: doc.id,
-              id: doc.id,
+              key: doc.data().id,
+              id: doc.data().id,
               photoURL: user.photoURL
             };
           })
-          setIsDark(true);
-          setTweets(postedTweets);
+          setPostedTweets(postedTweets);
         })
       }
     })
@@ -58,21 +59,21 @@ function UserProfile() {
 
   const handleFavorite = async () => {
     setIsDark(false);
-    let userLikes = await firestore
-      .collection('likes')
+    firestore
+      .collection('tweets')
       .orderBy("date", "desc")
-      .where("userId", "==", user.uid)
-      .get()
-      let favTweets = await Promise.all (userLikes.docs.map(async (doc) => {
-        const tweetId = doc.data().tweetId;
-        const otherTweet = await firestore.doc(`tweets/${tweetId}`).get();
-        return {
-          ...otherTweet.data(),
-          key: otherTweet.id,
-          id: otherTweet.id
-        };
-      }))
-      setTweets(favTweets);
+      .where("tweetLikes", "array-contains", user.uid)
+      .onSnapshot((snapshot)=>{
+        const getFavedTweets = snapshot.docs.map((doc) => {
+            return {
+            ...doc.data(),
+            key: doc.data().id,
+            id: doc.data().id,
+            photoURL: user.photoURL
+          }
+        })
+        setFavedTweets(getFavedTweets);
+      })
   }
   
   
@@ -83,7 +84,7 @@ function UserProfile() {
         .doc(`users/${user.uid}`)
         .get()
         .then((snapshot)=>{
-          setColor(snapshot.data().color);
+          setUserColor(snapshot.data().color);
           setUserName (snapshot.data().username);
         });
         const unsuscribePosts = handlePosts();
@@ -93,7 +94,7 @@ function UserProfile() {
         };
       } else {navigate('/tweets')};
     })
-  }, []);
+  }, [navigate]);
 
   return (
     <div className='profile-container'>
@@ -113,8 +114,8 @@ function UserProfile() {
       </div>
       <div className="profile-main-container">
         <div className="profile-main">
-          <img src={user?.photoURL} className={`profile-photo border-${color}`} alt='user'></img>
-          <div className={`user-color username-${color}`}>{userName}</div>
+          <img src={user?.photoURL} className={`profile-photo border-${userColor}`} alt='user'></img>
+          <div className={`user-color username-${userColor}`}>{userName}</div>
           <div className="tabs-buttons">
             <button 
               type="button" 
@@ -132,13 +133,21 @@ function UserProfile() {
         </div>
       </div>
       <div className="tweets-list">
-        {tweets.map((tweet) => {
+        {isDark ? 
+        postedTweets.map((tweet) => {
           return (
             <TweetCard 
               key={tweet.id} 
               tweet={tweet} />
           );
-        })}
+        }) :
+        favedTweets.map((tweet) => {
+          return (
+            <TweetCard 
+              tweet={tweet} />
+          );
+        })
+        }
       </div>
     </div>
   )

@@ -5,9 +5,9 @@ import { TweetCard } from "../tweetCard/TweetCard";
 import {auth, firestore, getCurrentUser} from "../../firebase/Firebase";
 
 //imgs
-import headerTitle from '../../pictures/header-title.svg'
-import post from '../../pictures/post.svg'
-import smallLogo from '../../pictures/smalllogo.svg'
+import headerTitle from '../../assets/pictures/header-title.svg'
+import post from '../../assets/pictures/post.svg'
+import smallLogo from '../../assets/pictures/smalllogo.svg'
 
 
 //React
@@ -27,12 +27,10 @@ function Feed() {
     navigate('/userprofile')
   }
 
-  const [color, setColor] = useState ("");
-  
   // Estructura del tweet que creamos para enviar a Firebase
   const [tweet, setTweet] = useState({
     author: '',
-    likesCount: 0,
+    tweetLikes: [],
     photo: '',
     tweet: '',
     user: user !== null ?  user.uid : "",
@@ -44,30 +42,49 @@ function Feed() {
   // Estado local para los tweets que hay en firebase
   const [tweets, setTweets] = useState([]);
 
+  const [userColor, setUserColor] = useState ("");
+  
+
   //Variable para darle estilo a la barra de input completado
   let tweetLength = (tweetValue.length)/2 + '%';
-  
+
   // Crea la conexión para escuchar cambios en el documento de Firebase
   const tweetsListener = () =>
     firestore.collection("tweets").orderBy("date", "desc").onSnapshot(
       (snapshot) => {
         const tweets = snapshot.docs.map((doc) => {
+          firestore.doc(`tweets/${doc.id}`).update({ id: doc.id });
           return {
             ...doc.data(),
             id: doc.id,
           };
-        },
-        () => {
+        }, () => {
           console.error("Sucedio un error");
-        }
+          }
         );
         setTweets(tweets);
-      },
-      (error) => {
+      }, (error) => {
         console.error(error);
-      }
+        }
     );
-
+  
+    useEffect(() => {
+      auth.onAuthStateChanged((user) => {
+        if (user !== null) {
+          firestore
+          .doc(`users/${user.uid}`)
+          .get()
+          .then((snapshot) => { 
+            setUserColor(snapshot.data().color);
+          })
+          const unsuscribeTweets = tweetsListener();
+          return () => {
+            // Limpiamos el listener creado cuando se desmonta el componente
+            unsuscribeTweets();
+          };
+        } else {navigate('/tweets')}
+      })
+    },[navigate]);  
     
   // Actualiza el estado local del tweet que vamos a enviar a Firebase
   const handleNewTweet = (e) => {
@@ -80,8 +97,15 @@ function Feed() {
       userId: user.uid,
       date: date.getTime() + date.getMinutes() + date.getSeconds(),
     }
+    
     setTweet(newTweet);
     setTweetValue(newTweet.tweet)
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      sendTweet(e);
+    }
   }
   
   // Envia el tweet local a Firebase
@@ -95,30 +119,12 @@ function Feed() {
     setTweetValue('');
   };
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user !== null) {
-        firestore
-        .doc(`users/${user.uid}`)
-        .get()
-        .then((snapshot) => { 
-          setColor(snapshot.data().color);
-        })
-        const unsuscribeTweets = tweetsListener();
-        return () => {
-          // Limpiamos el listener creado cuando se desmonta el componente
-          unsuscribeTweets();
-        };
-      } else {navigate('/tweets')}
-    })
-  },[]);
-
   return (
     <div className="feed">
       <div className="header">
         <div className="header-container">
           <button type="button" className='header-user' onClick={goToProfile}>
-            <img src={user?.photoURL} className={`header-user border-${color}`} alt="Header user"></img>
+            <img src={user?.photoURL} className={`header-user border-${userColor}`} alt="Header user"></img>
           </button>
           <img src={smallLogo} className="small-logo" alt="Small Logo"></img>
           <div>
@@ -132,7 +138,8 @@ function Feed() {
             <img src={user?.photoURL} alt='User' className='form-user'></img>
             <form className="form-container">
               <textarea 
-                onChange={handleNewTweet} 
+                onChange={handleNewTweet}
+                onKeyDown={handleKeyDown} 
                 className='text-area'
                 placeholder="What's happening?"
                 value={tweetValue} 

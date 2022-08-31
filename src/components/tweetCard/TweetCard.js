@@ -2,9 +2,9 @@
 import { firestore, getCurrentUser } from "../../firebase/Firebase";
 
 //icons
-import fullHeart from '../../pictures/full-heart.svg'
-import emptyHeart from '../../pictures/emptyHeart.svg'
-import garbage from '../../pictures/garbage.svg'
+import fullHeart from '../../assets/pictures/full-heart.svg'
+import emptyHeart from '../../assets/pictures/emptyHeart.svg'
+import garbage from '../../assets/pictures/garbage.svg'
 
 //React
 import { useEffect, useState } from "react";
@@ -13,23 +13,27 @@ import { useEffect, useState } from "react";
 import "./TweetCard.css";
 
 export function TweetCard({ tweet }) {
-  const { id, likesCount, userId } = tweet;
+  const { id, userId } = tweet;
 
   const user = getCurrentUser();
   const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-
   
   const [buttonDisable, setButtonDisable] = useState(false);
-  const [color, setColor]= useState("");
   const [liked, setLiked] = useState();
+  const [userColor, setUserColor]= useState("");
   const [userName, setUserName] = useState("");
   
   const checkLike = async () => {
-    const doc = await firestore.doc(`likes/${user?.uid}-${tweet.id}`).get();
-    const isLiked = doc.data();
-    if (!!isLiked) {
-      setLiked(true);
+    const doc = await firestore.doc(`tweets/${tweet.id}`).get();
+    if (doc.data()) {
+      const index = doc.data().tweetLikes.indexOf(user.uid);
+      if (index >=0) {
+        setLiked(true);
+      } else {
+        setLiked(false)
+      }
     }
+    
   };
 
   useEffect(() => {
@@ -37,44 +41,38 @@ export function TweetCard({ tweet }) {
       .doc(`users/${tweet.userId}`)
       .get()
       .then((snapshot)=>{
-        setColor(snapshot.data().color)
+        setUserColor(snapshot.data().color)
         setUserName (snapshot.data().username)
       })
-
     checkLike();
-  },[]);
+  },[tweet.userId, checkLike]);
 
   // Borra el documento en Firebase por su id
   const handleDelete = () => {
     let option = window.confirm("¿Seguro que quiere borrar su Tweet?");
     if (option) {
       firestore.doc(`tweets/${id}`).delete();
-      firestore
-        .collection("likes")
-        .where("tweetId", "==", id)
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            doc.ref.delete();
-          });
-        });
     }
   };
 
   // Actualiza el documento de relacion de likes
   const handleLike = async () => {
     setButtonDisable(true);
-    firestore
+    const tweetliked = await firestore
       .doc(`tweets/${tweet.id}`)
-      .update({ likesCount: liked ? likesCount - 1 : likesCount + 1});
-    const docRef = `likes/${user.uid}-${id}`;
-    if (liked) {
+      .get();
+    const index = tweetliked.data().tweetLikes.indexOf(user.uid);
+    let localArray = tweetliked.data().tweetLikes;
+    if (index >=0) {
       setLiked(false);
-      firestore.doc(docRef).delete();
+      localArray.splice(index, 1);
     } else {
       setLiked(true);
-      firestore.doc(docRef).set({ userId:user.uid, tweetId:tweet.id, date:tweet.date });
+      localArray.push(user.uid);
     }
+    firestore
+    .doc(`tweets/${tweet.id}`)
+    .update({ tweetLikes: localArray });
     setButtonDisable(false);
   };
 
@@ -89,7 +87,7 @@ export function TweetCard({ tweet }) {
       <div className='tweet-container'>
         <div className='tweet-header'>
           <div>  
-            <h1 className={`username-${color}`}>{userName}</h1>
+            <h1 className={`username-${userColor}`}>{userName}</h1>
             <span className='date'>- {tweetDate(tweet.date)}.</span>
           </div>
           {
@@ -109,9 +107,9 @@ export function TweetCard({ tweet }) {
                 <img src={emptyHeart} className='empty-heart heart-button' alt="empty-heart"></img>
                 }
               </button>
-              <span className={`likes-number ${liked ? 'red-number' : ''}`}>{tweet.likesCount ?? 0}</span>
+              <span className={`likes-number ${liked ? 'red-number' : ''}`}>{tweet.tweetLikes?.length ?? 0}</span>
             </div> :
-            <div className={`likes-number ${liked ? 'red-number' : ''}`}>{tweet.likesCount ?? 0}</div>
+            <div className={`likes-number ${liked ? 'red-number' : ''}`}>{tweet.tweetLikes?.length ?? 0}</div>
         }
       </div>
     </div>

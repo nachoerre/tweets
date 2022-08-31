@@ -112,6 +112,7 @@
   width: 20px;
   margin-right: 5px;
   border: none;
+  cursor: pointer;
 }
 
 .likes-number {

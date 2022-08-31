@@ -1,2 +1,0 @@
-1- En User Profile no funcionan bien likes ni delete (se actualiza luego).
-2- Falta vista responsive.

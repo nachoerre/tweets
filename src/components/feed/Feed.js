@@ -1,5 +1,5 @@
 //components
-import { TweetCard } from "../tweetCard/TweetCard";
+import TweetCard from "../tweetCard/TweetCard";
 
 //Firebase
 import {auth, firestore, getCurrentUser} from "../../firebase/Firebase";
@@ -97,7 +97,6 @@ function Feed() {
       userId: user.uid,
       date: date.getTime() + date.getMinutes() + date.getSeconds(),
     }
-    
     setTweet(newTweet);
     setTweetValue(newTweet.tweet)
   }

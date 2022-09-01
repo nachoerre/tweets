@@ -1,5 +1,5 @@
 //components
-import { TweetCard } from '../tweetCard/TweetCard';
+import TweetCard from '../tweetCard/TweetCard';
 
 //Firebase
 import {auth, firestore, getCurrentUser, logout} from '../../firebase/Firebase';
@@ -144,6 +144,7 @@ function UserProfile() {
         favedTweets.map((tweet) => {
           return (
             <TweetCard 
+              key={tweet.id}
               tweet={tweet} />
           );
         })

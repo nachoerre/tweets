@@ -7,12 +7,12 @@ import emptyHeart from '../../assets/pictures/emptyHeart.svg'
 import garbage from '../../assets/pictures/garbage.svg'
 
 //React
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //styles
 import "./TweetCard.css";
 
-export function TweetCard({ tweet }) {
+const TweetCard = ({ tweet }) => {
   const { id, userId } = tweet;
 
   const user = getCurrentUser();
@@ -22,19 +22,11 @@ export function TweetCard({ tweet }) {
   const [liked, setLiked] = useState();
   const [userColor, setUserColor]= useState("");
   const [userName, setUserName] = useState("");
-  
-  const checkLike = async () => {
-    const doc = await firestore.doc(`tweets/${tweet.id}`).get();
-    if (doc.data()) {
-      const index = doc.data().tweetLikes.indexOf(user.uid);
-      if (index >=0) {
-        setLiked(true);
-      } else {
-        setLiked(false)
-      }
-    }
-    
-  };
+
+  useEffect(() => {
+    const isLikes = tweet.tweetLikes.find((userLike) => userLike === user.uid);
+    setLiked(isLikes)
+  },[tweet.tweetLikes, user.uid])
 
   useEffect(() => {
     firestore
@@ -44,8 +36,10 @@ export function TweetCard({ tweet }) {
         setUserColor(snapshot.data().color)
         setUserName (snapshot.data().username)
       })
-    checkLike();
-  },[tweet.userId, checkLike]);
+      return (
+        console.log('exit')
+      )
+  },[tweet.userId]);
 
   // Borra el documento en Firebase por su id
   const handleDelete = () => {
@@ -115,3 +109,13 @@ export function TweetCard({ tweet }) {
     </div>
   );
 }
+
+function tweetsPropsAreEqual(prevProps, nextProps) {
+  const result =
+    prevProps.tweet.tweetLikes.length === nextProps.tweet.tweetLikes.length;
+  return result;
+}
+
+export default React.memo(TweetCard, (prevProps, nextProps) =>
+  tweetsPropsAreEqual(prevProps, nextProps)
+);
